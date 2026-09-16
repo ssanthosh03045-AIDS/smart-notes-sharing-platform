@@ -188,9 +188,16 @@ export default function App() {
                 />
               </div>
 
-              <button className="bg-gradient-to-r from-indigo-600 to-purple-600 px-7 font-bold text-white">
-                Search
-              </button>
+              <button
+  onClick={() =>
+    document.getElementById("notes")?.scrollIntoView({
+      behavior: "smooth",
+    })
+  }
+  className="bg-gradient-to-r from-indigo-600 to-purple-600 px-7 font-bold text-white"
+>
+  Search
+</button>
             </div>
 
             {/* TAGS */}
