@@ -54,6 +54,73 @@ const DEMO_NOTES: Note[] = [
       "Python programming fundamentals for beginners.",
     tags: ["Python", "Programming"],
   },
+  {
+  id: "demo-3",
+  title: "Mathematics Fundamentals",
+  description: "Basic mathematics concepts and problem solving.",
+  category: "mathematics",
+  author: "Demo Instructor",
+  authorId: "demo",
+  uploadDate: new Date().toISOString(),
+  fileSize: "110 KB",
+  fileType: "pdf",
+  downloads: 10,
+  views: 25,
+  rating: 4.6,
+  content: "Mathematics study notes.",
+  tags: ["Mathematics", "Basics"],
+},
+
+{
+  id: "demo-4",
+  title: "Database Management Basics",
+  description: "Introduction to DBMS and SQL.",
+  category: "database",
+  author: "Demo Instructor",
+  authorId: "demo",
+  uploadDate: new Date().toISOString(),
+  fileSize: "100 KB",
+  fileType: "pdf",
+  downloads: 8,
+  views: 20,
+  rating: 4.5,
+  content: "Database management study notes.",
+  tags: ["Database", "DBMS"],
+},
+
+{
+  id: "demo-5",
+  title: "Science Fundamentals",
+  description: "Basic science concepts and important topics.",
+  category: "science",
+  author: "Demo Instructor",
+  authorId: "demo",
+  uploadDate: new Date().toISOString(),
+  fileSize: "100 KB",
+  fileType: "pdf",
+  downloads: 15,
+  views: 30,
+  rating: 4.7,
+  content: "Science fundamentals study notes.",
+  tags: ["Science", "Fundamentals"],
+},
+
+{
+  id: "demo-6",
+  title: "General Knowledge Notes",
+  description: "Useful general academic resources.",
+  category: "others",
+  author: "Demo Instructor",
+  authorId: "demo",
+  uploadDate: new Date().toISOString(),
+  fileSize: "90 KB",
+  fileType: "pdf",
+  downloads: 6,
+  views: 18,
+  rating: 4.4,
+  content: "General knowledge study notes.",
+  tags: ["Others", "General"],
+},
 ];
 
 export default function App() {
@@ -335,34 +402,54 @@ export default function App() {
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
 
-          {[
-            ["Computer Science", "120+ notes", "icon-blue", "💻"],
-            ["Mathematics", "95+ notes", "icon-purple", "📐"],
-            ["Programming", "80+ notes", "icon-pink", "💻"],
-            ["Database", "60+ notes", "icon-green", "🗄️"],
-            ["Science", "70+ notes", "icon-blue", "🔬"],
-            ["Others", "50+ notes", "icon-purple", "📚"],
-          ].map(([name, count, color, icon]) => (
+{[
+  ["Computer Science", "120+ notes", "icon-blue", "💻"],
+  ["Mathematics", "95+ notes", "icon-purple", "📐"],
+  ["Programming", "80+ notes", "icon-pink", "💻"],
+  ["Database", "60+ notes", "icon-green", "🗄️"],
+  ["Science", "70+ notes", "icon-blue", "🔬"],
+  ["Others", "50+ notes", "icon-purple", "📚"],
+].map(([name, count, color, icon]) => (
+  <button
+    key={name}
+    type="button"
+    onClick={() => {
+      const categoryValue = name
+        .toLowerCase()
+        .replace(/\s+/g, "-");
 
-            <button
-              key={name}
-              onClick={() => setSearch(name)}
-              className="education-card p-5 text-center transition hover:-translate-y-1"
-            >
-              <div
-                className={`${color} mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl text-2xl`}
-              >
-                {icon}
-              </div>
+      setSearch(categoryValue);
 
-              <h3 className="font-bold text-slate-900">
-                {name}
-              </h3>
+      setTimeout(() => {
+        document.getElementById("notes")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 200);
+    }}
+    className="education-card p-5 text-center transition hover:-translate-y-1 cursor-pointer"
+  >
+    <div
+      className={`${color} mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl text-2xl`}
+    >
+      {icon}
+    </div>
 
-              <p className="mt-1 text-xs text-slate-500">
-                {count}
-              </p>
-            </button>
+    <h3 className="font-bold text-slate-900">
+      {name}
+    </h3>
+
+    <p className="mt-1 text-xs text-slate-500">
+      {count}
+    </p>
+  </button>
+))}
+    <p className="mt-1 text-xs text-slate-500">
+      {count}
+    </p>
+  </button>
+))}
+               
 
           ))}
 
