@@ -1,27 +1,212 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap');
 @import "tailwindcss";
 
-@theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+:root {
+  font-family: 'Inter', sans-serif;
+  color: #172554;
+  background: #f8faff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
 }
 
-/* Custom aesthetic micro-details */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.08), transparent 30%),
+    radial-gradient(circle at 90% 20%, rgba(168, 85, 247, 0.08), transparent 30%),
+    #f8faff;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+::selection {
+  background: #6366f1;
+  color: white;
+}
+
+/* Modern education cards */
+
+.education-card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: 22px;
+  box-shadow: 0 10px 35px rgba(30, 41, 99, 0.08);
+  transition: all 0.25s ease;
+}
+
+.education-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 45px rgba(79, 70, 229, 0.14);
+}
+
+/* Book / note visual style */
+
+.book-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #eef2ff, #faf5ff);
+  border: 1px solid #e0e7ff;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(79, 70, 229, 0.15);
+}
+
+/* Gradient headings */
+
+.gradient-heading {
+  background: linear-gradient(90deg, #1e3a8a, #4f46e5, #9333ea);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Search box */
+
+.modern-search {
+  background: white;
+  border: 1px solid #dbe4ff;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(79, 70, 229, 0.08);
+  transition: all 0.2s ease;
+}
+
+.modern-search:focus-within {
+  border-color: #6366f1;
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.16);
+}
+
+/* Primary button */
+
+.education-button {
+  border: none;
+  border-radius: 14px;
+  padding: 12px 22px;
+  color: white;
+  font-weight: 600;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.2);
+  transition: all 0.2s ease;
+}
+
+.education-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(79, 70, 229, 0.28);
+}
+
+/* Subject chips */
+
+.subject-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #3730a3;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid #e0e7ff;
+  transition: all 0.2s ease;
+}
+
+.subject-chip:hover {
+  background: #e0e7ff;
+  transform: translateY(-1px);
+}
+
+/* PDF / notes items */
+
+.note-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border-radius: 16px;
+  background: white;
+  border: 1px solid #e8edff;
+  transition: all 0.2s ease;
+}
+
+.note-item:hover {
+  border-color: #c7d2fe;
+  background: #fafaff;
+}
+
+/* Soft icon backgrounds */
+
+.icon-blue {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.icon-purple {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+.icon-pink {
+  background: #fce7f3;
+  color: #db2777;
+}
+
+.icon-green {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+/* Scrollbar */
+
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
+  background: #a5b4fc;
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #6366f1;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+  body {
+    background: #f8faff;
+  }
+
+  .education-card {
+    border-radius: 18px;
+  }
+
+  .book-card {
+    border-radius: 18px;
+  }
 }
