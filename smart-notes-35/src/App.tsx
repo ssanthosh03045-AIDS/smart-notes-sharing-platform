@@ -175,30 +175,7 @@ export default function App() {
               question papers, textbooks and useful academic resources.
             </p>
 
-            {/* SEARCH */}
-            <div className="modern-search mt-8 flex max-w-2xl overflow-hidden">
-              <div className="flex flex-1 items-center gap-3 px-5">
-                <Search size={22} className="text-indigo-500" />
-
-                <input
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search notes, subjects or topics..."
-                  className="w-full bg-transparent py-4 outline-none placeholder:text-slate-400"
-                />
-              </div>
-
-              <button
-  onClick={() =>
-    document.getElementById("notes")?.scrollIntoView({
-      behavior: "smooth",
-    })
-  }
-  className="bg-gradient-to-r from-indigo-600 to-purple-600 px-7 font-bold text-white"
->
-  Search
-</button>
-            </div>
+           
 
             {/* TAGS */}
             <div className="mt-5 flex flex-wrap gap-2">
@@ -232,21 +209,45 @@ export default function App() {
 
                 <div className="w-full max-w-md space-y-3">
 
-                  <div className="rounded-xl bg-gradient-to-r from-purple-500 to-indigo-500 p-5 text-center text-xl font-extrabold text-white shadow-lg">
-                    LEARN
-                  </div>
+                  <button
+  onClick={() =>
+    document.getElementById("notes")?.scrollIntoView({
+      behavior: "smooth",
+    })
+  }
+  className="w-full rounded-xl bg-gradient-to-r from-purple-500 to-indigo-500 p-5 text-center text-xl font-extrabold text-white shadow-lg transition hover:-translate-y-1"
+>
+  LEARN
+</button>
 
-                  <div className="rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 p-5 text-center text-xl font-extrabold text-white shadow-lg">
-                    SHARE
-                  </div>
+<button
+  onClick={() => setShowAuth(true)}
+  className="w-full rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 p-5 text-center text-xl font-extrabold text-white shadow-lg transition hover:-translate-y-1"
+>
+  SHARE
+</button>
 
-                  <div className="rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 p-5 text-center text-xl font-extrabold text-white shadow-lg">
-                    GROW
-                  </div>
+<button
+  onClick={() =>
+    document.getElementById("categories")?.scrollIntoView({
+      behavior: "smooth",
+    })
+  }
+  className="w-full rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 p-5 text-center text-xl font-extrabold text-white shadow-lg transition hover:-translate-y-1"
+>
+  GROW
+</button>
 
-                  <div className="rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 p-5 text-center text-xl font-extrabold text-white shadow-lg">
-                    SUCCEED
-                  </div>
+<button
+  onClick={() =>
+    document.getElementById("about")?.scrollIntoView({
+      behavior: "smooth",
+    })
+  }
+  className="w-full rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 p-5 text-center text-xl font-extrabold text-white shadow-lg transition hover:-translate-y-1"
+>
+  SUCCEED
+</button>  
 
                 </div>
 
