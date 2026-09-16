@@ -444,14 +444,7 @@ export default function App() {
     </p>
   </button>
 ))}
-    <p className="mt-1 text-xs text-slate-500">
-      {count}
-    </p>
-  </button>
-))}
-               
-
-          ))}
+   
 
         </div>
       </section>
