@@ -210,11 +210,12 @@ export default function App() {
                 <div className="w-full max-w-md space-y-3">
 
                   <button
-  onClick={() =>
-    document.getElementById("notes")?.scrollIntoView({
-      behavior: "smooth",
-    })
-  }
+ onClick={() => {
+  setSearch("");
+  document.getElementById("notes")?.scrollIntoView({
+    behavior: "smooth",
+  });
+}}
   className="w-full rounded-xl bg-gradient-to-r from-purple-500 to-indigo-500 p-5 text-center text-xl font-extrabold text-white shadow-lg transition hover:-translate-y-1"
 >
   LEARN
