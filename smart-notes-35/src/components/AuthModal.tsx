@@ -80,12 +80,6 @@ export default function AuthModal({ onClose, onAuthSuccess }: AuthModalProps) {
   }
 };
      
-  } finally {
-    setLoading(false);
-  }
-};
- 
-return (
 
   return (
     <div id="auth-modal-overlay" className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
