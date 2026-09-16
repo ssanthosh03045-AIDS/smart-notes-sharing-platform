@@ -29,7 +29,7 @@ export default function NotesCatalog({ notes, onSelectNote, onRefreshNotes, curr
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | 'all'>('all');
   const [showUploadModal, setShowUploadModal] = useState(false);
-
+  const [viewNote, setViewNote] = useState<Note | null>(null);
   // Upload Form State
   const [uploadTitle, setUploadTitle] = useState('');
   const [uploadDesc, setUploadDesc] = useState('');
@@ -305,7 +305,10 @@ export default function NotesCatalog({ notes, onSelectNote, onRefreshNotes, curr
               <div
                 id={`note-card-${note.id}`}
                 key={note.id}
-                onClick={() => onSelectNote(note)}
+                onClick={() => {
+                  setViewNote(note);
+                  onSelectNote(note);
+                }}
                 className="group flex flex-col bg-white border border-slate-200/90 hover:border-blue-500/50 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer relative overflow-hidden"
               >
                 {/* Banner Strip */}
@@ -358,7 +361,86 @@ export default function NotesCatalog({ notes, onSelectNote, onRefreshNotes, curr
           })}
         </div>
       )}
+{/* Note View Popup */}
+{viewNote && (
+  <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/70 backdrop-blur-sm p-4">
+    <div className="w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white shadow-2xl">
 
+      <div className="sticky top-0 z-10 flex items-center justify-between gap-4 bg-slate-950 px-6 py-5 text-white">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wider text-blue-400">
+            {viewNote.category}
+          </p>
+
+          <h2 className="mt-1 text-xl font-bold">
+            {viewNote.title}
+          </h2>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setViewNote(null)}
+          className="rounded-full p-2 text-slate-300 hover:bg-white/10 hover:text-white"
+        >
+          <X size={22} />
+        </button>
+      </div>
+
+      <div className="p-6">
+
+        <div className="mb-6 rounded-2xl bg-blue-50 p-5">
+          <h3 className="mb-2 font-bold text-slate-800">
+            Description
+          </h3>
+
+          <p className="text-sm leading-6 text-slate-600">
+            {viewNote.description}
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+          <div className="mb-4 flex items-center gap-2">
+            <FileText size={20} className="text-blue-600" />
+
+            <h3 className="font-bold text-slate-800">
+              Study Notes
+            </h3>
+          </div>
+
+          <div className="whitespace-pre-wrap rounded-xl bg-white p-5 text-sm leading-7 text-slate-700 shadow-sm">
+            {viewNote.content}
+          </div>
+        </div>
+
+        <div className="mt-5 flex flex-wrap gap-2">
+          {viewNote.tags.map((tag, index) => (
+            <span
+              key={index}
+              className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600"
+            >
+              #{tag}
+            </span>
+          ))}
+        </div>
+
+        <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-5">
+          <div className="text-xs text-slate-500">
+            By <span className="font-semibold">{viewNote.author}</span>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setViewNote(null)}
+            className="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700"
+          >
+            Close
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+)}
       {/* Uploader Popup Overlay */}
       {showUploadModal && (
         <div id="upload-overlay-backdrop" className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto">
