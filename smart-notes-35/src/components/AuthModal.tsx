@@ -18,53 +18,74 @@ export default function AuthModal({ onClose, onAuthSuccess }: AuthModalProps) {
   const [error, setError] = useState('');
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
+  e.preventDefault();
+  setError('');
+  setLoading(true);
 
-    const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
-    const payload = isLogin
-      ? { email, password }
-      : { username, email, password, role, bio };
+  try {
+    const users = JSON.parse(
+      localStorage.getItem('notes_users') || '[]'
+    );
 
-    try {
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+    if (isLogin) {
+      const user = users.find(
+        (u: User & { password: string }) =>
+          u.email === email && u.password === password
+      );
 
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || 'Identity gate verification failed.');
+      if (!user) {
+        throw new Error('Invalid email or password.');
       }
 
-      // If registered successfully, let's login automatically for mock ease
-      if (!isLogin) {
-        // Auto-login after registration
-        const loginRes = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
-        });
-        const loginData = await loginRes.json();
-        if (loginRes.ok) {
-          onAuthSuccess(loginData.user);
-          onClose();
-        } else {
-          setIsLogin(true);
-          setError('Account registered! Please sign in.');
-        }
-      } else {
-        onAuthSuccess(data.user);
-        onClose();
+      const { password: _password, ...safeUser } = user;
+
+      onAuthSuccess(safeUser as User);
+      onClose();
+    } else {
+      const existingUser = users.find(
+        (u: User & { password: string }) =>
+          u.email === email
+      );
+
+      if (existingUser) {
+        throw new Error('Account already exists. Please sign in.');
       }
-    } catch (err: any) {
-      setError(err.message || 'Connecting to server failed.');
-    } finally {
-      setLoading(false);
+
+      const newUser = {
+        username,
+        email,
+        password,
+        role,
+        bio,
+      };
+
+      users.push(newUser);
+
+      localStorage.setItem(
+        'notes_users',
+        JSON.stringify(users)
+      );
+
+      const { password: _password, ...safeUser } = newUser;
+
+      onAuthSuccess(safeUser as User);
+      onClose();
     }
-  };
+  } catch (err: any) {
+    setError(
+      err.message || 'Authentication failed.'
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+     
+  } finally {
+    setLoading(false);
+  }
+};
+ 
+return (
 
   return (
     <div id="auth-modal-overlay" className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
