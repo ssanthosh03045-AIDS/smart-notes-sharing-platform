@@ -204,9 +204,10 @@ export default function NotesCatalog({ notes, onSelectNote, onRefreshNotes, curr
       note.category.toLowerCase().includes(searchValue) ||
       note.tags.some((t) => t.toLowerCase().includes(searchValue));
 
-    const matchesCat =
-      selectedCategory === 'all' ||
-      note.category === selectedCategory;
+   const matchesCat =
+     selectedCategory === 'all' ||
+     note.category.trim().toLowerCase() ===
+       selectedCategory.trim().toLowerCase();
 
     return matchesSearch && matchesCat;
 });
@@ -288,7 +289,10 @@ export default function NotesCatalog({ notes, onSelectNote, onRefreshNotes, curr
             <button
               id={`cat-pill-${cat.slug}`}
               key={cat.slug}
-              onClick={() => setSelectedCategory(cat.slug)}
+             onClick={() => {
+               setSearchTerm('');
+               setSelectedCategory(cat.slug);
+              }}
               className={`px-4 py-2 text-xs font-semibold rounded-full border transition-all shrink-0 flex items-center gap-1.5 cursor-pointer ${
                 isActive
                   ? 'bg-blue-600 border-blue-600 text-white'
