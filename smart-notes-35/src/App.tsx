@@ -127,6 +127,7 @@ export default function App() {
   const [notes, setNotes] = useState<Note[]>(DEMO_NOTES);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
   const [search, setSearch] = useState("");
   const [subjectFilter, setSubjectFilter] = useState("");
@@ -228,7 +229,9 @@ export default function App() {
       <button
         type="button"
         onClick={() => {
-          setShowProfileMenu(false);
+         setShowProfileMenu(false);
+         setShowProfile(true);
+        }}
           window.dispatchEvent(new Event("showSavedNotes"));
         }}
         className="w-full rounded-xl px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-pink-50"
@@ -648,6 +651,76 @@ export default function App() {
           onClose={() => setShowAuth(false)}
           onAuthSuccess={handleAuthSuccess}
         />
+      )}
+             {/* PROFILE MODAL */}
+      {showProfile && currentUser && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/50 p-4">
+          <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl">
+
+            <div className="mb-6 flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-slate-900">
+                  My Profile
+                </h2>
+                <p className="text-sm text-slate-500">
+                  Your NoteShare account
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowProfile(false)}
+                className="rounded-full p-2 text-slate-500 hover:bg-slate-100"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="mb-5 flex items-center gap-4 rounded-2xl bg-gradient-to-r from-indigo-50 to-purple-50 p-4">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-xl font-bold text-white">
+                {currentUser.username?.charAt(0).toUpperCase() || "S"}
+              </div>
+
+              <div>
+                <h3 className="font-bold text-slate-900">
+                  {currentUser.username || "Student"}
+                </h3>
+                <p className="text-sm text-slate-500">
+                  {currentUser.email}
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="rounded-xl border border-slate-100 p-4">
+                <p className="text-xs font-semibold text-slate-400">
+                  ROLE
+                </p>
+                <p className="mt-1 font-medium text-slate-700">
+                  {currentUser.role || "Student"}
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-slate-100 p-4">
+                <p className="text-xs font-semibold text-slate-400">
+                  BIO
+                </p>
+                <p className="mt-1 text-sm text-slate-700">
+                  {currentUser.bio || "No bio added yet."}
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowProfile(false)}
+              className="mt-6 w-full rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 py-3 font-semibold text-white hover:opacity-90"
+            >
+              Close
+            </button>
+
+          </div>
+        </div>
       )}
 
     </div>
