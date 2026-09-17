@@ -27,7 +27,7 @@ const CATEGORIES: { slug: CategoryType; name: string; icon: any; color: string }
 
 export default function NotesCatalog({ notes, onSelectNote, onRefreshNotes, currentUser, onTriggerLogin }: NotesCatalogProps) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<CategoryType | 'all' | 'saved'>('all');
+  const [selectedCategory, setSelectedCategory] = useState<CategoryType | 'all' | 'saved' | 'my'>('all');
   useEffect(() => {
   const handleSavedNotes = () => {
     setSearchTerm("");
@@ -224,12 +224,14 @@ export default function NotesCatalog({ notes, onSelectNote, onRefreshNotes, curr
       note.tags.some((t) => t.toLowerCase().includes(searchValue));
 
     const matchesCat =
-      selectedCategory === 'all' ||
-      (selectedCategory === 'saved'
-        ? bookmarkedNotes.includes(note.id)
-        : note.category.trim().toLowerCase() ===
-          selectedCategory.trim().toLowerCase());
-    return matchesSearch && matchesCat;
+     selectedCategory === 'all' ||
+     (selectedCategory === 'saved'
+       ? bookmarkedNotes.includes(note.id)
+       : selectedCategory === 'my'
+          ? note.authorId === currentUser?.id
+          : note.category.trim().toLowerCase() ===
+            selectedCategory.trim().toLowerCase());
+     return matchesSearch && matchesCat;
 });
 
   return (
