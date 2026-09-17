@@ -3,7 +3,7 @@ import { Note, CategoryType, User } from '../types';
 import { 
   Search, Cpu, Calculator, FlaskConical, Compass, Feather, 
   Briefcase, Leaf, Sparkles, UploadCloud, Star, Download, Eye, 
-  FileText, Plus, X, Tag, BookOpen, AlertCircle
+  FileText, Plus, X, Tag, BookOpen, AlertCircle, Heart
 } from 'lucide-react';
 
 interface NotesCatalogProps {
@@ -29,6 +29,27 @@ export default function NotesCatalog({ notes, onSelectNote, onRefreshNotes, curr
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | 'all'>('all');
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [bookmarkedNotes, setBookmarkedNotes] = useState<string[]>(() => {
+  try {
+    return JSON.parse(localStorage.getItem('bookmarked_notes') || '[]');
+  } catch {
+    return [];
+  }
+});
+  const toggleBookmark = (noteId: string) => {
+  setBookmarkedNotes(prev => {
+    const updated = prev.includes(noteId)
+      ? prev.filter(id => id !== noteId)
+      : [...prev, noteId];
+
+    localStorage.setItem(
+      'bookmarked_notes',
+      JSON.stringify(updated)
+    );
+
+    return updated;
+  });
+};
   const [viewNote, setViewNote] = useState<Note | null>(null);
   // Upload Form State
   const [uploadTitle, setUploadTitle] = useState('');
@@ -174,11 +195,13 @@ export default function NotesCatalog({ notes, onSelectNote, onRefreshNotes, curr
   };
 
   // Filters logic
-  const filteredNotes = notes.filter(note => {
-    const matchesSearch = 
-      note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      note.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      note.tags.some(t => t.toLowerCase().includes(searchTerm.toLowerCase()));
+   const searchValue = searchTerm.toLowerCase().trim();
+
+   const matchesSearch =
+     note.title.toLowerCase().includes(searchValue) ||
+     note.description.toLowerCase().includes(searchValue) ||
+     note.category.toLowerCase().includes(searchValue) ||
+     note.tags.some(t => t.toLowerCase().includes(searchValue));
     
     const matchesCat = selectedCategory === 'all' || note.category === selectedCategory;
     
@@ -309,8 +332,25 @@ export default function NotesCatalog({ notes, onSelectNote, onRefreshNotes, curr
                   setViewNote(note);
                   onSelectNote(note);
                 }}
-                className="group flex flex-col bg-white border border-slate-200/90 hover:border-blue-500/50 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer relative overflow-hidden"
+                className="group relative flex flex-col bg-white border border-slate-200/90 hover:border-blue-500/50 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer relative overflow-hidden"
               >
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleBookmark(note.id);
+                   }}
+                   className="absolute top-4 right-4 z-10 rounded-full p-2 bg-white shadow-md border border-slate-200 hover:bg-blue-50"
+                 >
+                   <Heart
+                     size={18}
+                     className={
+                       bookmarkedNotes.includes(note.id)
+                         ? "fill-red-500 text-red-500"
+                         : "text-slate-400"
+                    }
+                  />
+                </button>
                 {/* Banner Strip */}
                 <div className="flex items-center justify-between gap-4 mb-4">
                   <div className={`py-1 px-2.5 rounded-lg border text-xs flex items-center gap-1.5 font-bold uppercase tracking-wider select-none ${catInfo.color}`}>
@@ -397,7 +437,37 @@ export default function NotesCatalog({ notes, onSelectNote, onRefreshNotes, curr
             {viewNote.description}
           </p>
         </div>
+        <div className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-3">
 
+  <div className="rounded-xl bg-slate-50 p-3">
+    <p className="text-xs text-slate-400">Subject</p>
+    <p className="mt-1 text-sm font-bold text-slate-700">
+      {viewNote.category}
+    </p>
+  </div>
+
+  <div className="rounded-xl bg-slate-50 p-3">
+    <p className="text-xs text-slate-400">File Type</p>
+    <p className="mt-1 text-sm font-bold text-slate-700 uppercase">
+      {viewNote.fileType}
+    </p>
+  </div>
+
+  <div className="rounded-xl bg-slate-50 p-3">
+    <p className="text-xs text-slate-400">Views</p>
+    <p className="mt-1 text-sm font-bold text-slate-700">
+      {viewNote.views || 0}
+    </p>
+  </div>
+
+  <div className="rounded-xl bg-slate-50 p-3">
+    <p className="text-xs text-slate-400">Downloads</p>
+    <p className="mt-1 text-sm font-bold text-slate-700">
+      {viewNote.downloads || 0}
+    </p>
+  </div>
+
+</div>
         <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
           <div className="mb-4 flex items-center gap-2">
             <FileText size={20} className="text-blue-600" />
