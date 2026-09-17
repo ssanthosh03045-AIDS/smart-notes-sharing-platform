@@ -126,6 +126,7 @@ const DEMO_NOTES: Note[] = [
 export default function App() {
   const [notes, setNotes] = useState<Note[]>(DEMO_NOTES);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
   const [search, setSearch] = useState("");
   const [subjectFilter, setSubjectFilter] = useState("");
@@ -201,13 +202,69 @@ export default function App() {
                   Hi, {currentUser.username}
                 </span>
 
-                <button
-                  onClick={logout}
-                  className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-indigo-300 hover:text-indigo-600"
-                >
-                  <LogOut size={16} />
-                  Logout
-                </button>
+                <div className="relative">
+  <button
+    type="button"
+    onClick={() => setShowProfileMenu(!showProfileMenu)}
+    className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
+  >
+    <span>
+      Welcome, {currentUser?.username || "Student"}
+    </span>
+    <span className="text-xs">▼</span>
+  </button>
+
+  {showProfileMenu && (
+    <div className="absolute right-0 mt-2 w-52 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl z-50">
+
+      <button
+        type="button"
+        onClick={() => setShowProfileMenu(false)}
+        className="w-full rounded-xl px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-blue-50"
+      >
+        👤 Profile
+      </button>
+
+      <button
+        type="button"
+        onClick={() => {
+          setShowProfileMenu(false);
+          document.getElementById("notes")?.scrollIntoView({
+            behavior: "smooth",
+          });
+        }}
+        className="w-full rounded-xl px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-pink-50"
+      >
+        ❤️ Saved Notes
+      </button>
+
+      <button
+        type="button"
+        onClick={() => setShowProfileMenu(false)}
+        className="w-full rounded-xl px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-purple-50"
+      >
+        📚 My Notes
+      </button>
+
+      <div className="my-1 border-t border-slate-100" />
+
+      <button
+        type="button"
+        onClick={() => {
+          setShowProfileMenu(false);
+          logout();
+        }}
+        className="w-full rounded-xl px-4 py-3 text-left text-sm font-semibold text-red-600 hover:bg-red-50"
+      >
+        <span className="inline-flex items-center gap-2">
+          <LogOut size={16} />
+          Logout
+        </span>
+      </button>
+
+    </div>
+  )}
+</div>
               </>
             ) : (
               <button
