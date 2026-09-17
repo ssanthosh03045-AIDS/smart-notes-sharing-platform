@@ -27,7 +27,7 @@ const CATEGORIES: { slug: CategoryType; name: string; icon: any; color: string }
 
 export default function NotesCatalog({ notes, onSelectNote, onRefreshNotes, currentUser, onTriggerLogin }: NotesCatalogProps) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<CategoryType | 'all'>('all');
+  const [selectedCategory, setSelectedCategory] = useState<CategoryType | 'all' | 'saved'>('all');
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [bookmarkedNotes, setBookmarkedNotes] = useState<string[]>(() => {
   try {
@@ -204,11 +204,12 @@ export default function NotesCatalog({ notes, onSelectNote, onRefreshNotes, curr
       note.category.toLowerCase().includes(searchValue) ||
       note.tags.some((t) => t.toLowerCase().includes(searchValue));
 
-   const matchesCat =
-     selectedCategory === 'all' ||
-     note.category.trim().toLowerCase() ===
-       selectedCategory.trim().toLowerCase();
-
+    const matchesCat =
+      selectedCategory === 'all' ||
+      (selectedCategory === 'saved'
+        ? bookmarkedNotes.includes(note.id)
+        : note.category.trim().toLowerCase() ===
+          selectedCategory.trim().toLowerCase());
     return matchesSearch && matchesCat;
 });
 
@@ -282,6 +283,16 @@ export default function NotesCatalog({ notes, onSelectNote, onRefreshNotes, curr
         >
           All Subjects
         </button>
+        <button
+  type="button"
+  onClick={() => {
+    setSearchTerm("");
+    setSelectedCategory("saved");
+  }}
+  className="px-4 py-2 text-xs font-semibold rounded-full border bg-white text-slate-700 hover:bg-pink-50"
+>
+  ❤️ Saved Notes
+</button>
         {CATEGORIES.map(cat => {
           const Icon = cat.icon;
           const isActive = selectedCategory === cat.slug;
@@ -362,7 +373,9 @@ export default function NotesCatalog({ notes, onSelectNote, onRefreshNotes, curr
                 <div className="flex items-center justify-between gap-4 mb-4">
                   <div className={`py-1 px-2.5 rounded-lg border text-xs flex items-center gap-1.5 font-bold uppercase tracking-wider select-none ${catInfo.color}`}>
                     <CatIcon size={13} />
-                    <span>{catInfo.name}</span>
+                    <span>
+                      {note.category === "science" ? "Science" : catInfo.name}
+                    </span>
                   </div>
                   <span className="font-mono text-[9px] bg-slate-100 text-slate-500 py-0.5 px-2 rounded-md uppercase font-bold tracking-wide">
                     {note.fileType}
