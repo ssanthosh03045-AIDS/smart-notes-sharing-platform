@@ -28,8 +28,9 @@ const CATEGORIES: { slug: CategoryType; name: string; icon: any; color: string }
 export default function NotesCatalog({ notes, onSelectNote, onRefreshNotes, currentUser, onTriggerLogin }: NotesCatalogProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | 'all' | 'saved' | 'my'>('all');
-  useEffect(() => {
-  const handleSavedNotes = () => {
+ 
+ useEffect(() => {
+   const handleSavedNotes = () => {
     setSearchTerm("");
     setSelectedCategory("saved");
 
@@ -41,12 +42,27 @@ export default function NotesCatalog({ notes, onSelectNote, onRefreshNotes, curr
     }, 100);
   };
 
+  const handleMyNotes = () => {
+    setSearchTerm("");
+    setSelectedCategory("my");
+
+    setTimeout(() => {
+      document.getElementById("notes")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 100);
+  };
+
   window.addEventListener("showSavedNotes", handleSavedNotes);
+  window.addEventListener("showMyNotes", handleMyNotes);
 
   return () => {
     window.removeEventListener("showSavedNotes", handleSavedNotes);
+    window.removeEventListener("showMyNotes", handleMyNotes);
   };
 }, []);
+  
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [bookmarkedNotes, setBookmarkedNotes] = useState<string[]>(() => {
   try {
