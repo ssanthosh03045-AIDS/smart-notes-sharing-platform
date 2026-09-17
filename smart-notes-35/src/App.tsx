@@ -218,9 +218,12 @@ export default function App() {
   {showProfileMenu && (
     <div className="absolute right-0 mt-2 w-52 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl z-50">
 
-      <button
+    <button
         type="button"
-        onClick={() => setShowProfileMenu(false)}
+        onClick={() => {
+          setShowProfileMenu(false);
+          setShowProfile(true);
+        }}
         className="w-full rounded-xl px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-blue-50"
       >
         👤 Profile
@@ -236,12 +239,13 @@ export default function App() {
       >
         ❤️ Saved Notes
       </button>
-        ❤️ Saved Notes
-      </button>
 
       <button
         type="button"
-        onClick={() => setShowProfileMenu(false)}
+        onClick={() => {
+          setShowProfileMenu(false);
+          window.dispatchEvent(new Event("showMyNotes"));
+        }}
         className="w-full rounded-xl px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-purple-50"
       >
         📚 My Notes
