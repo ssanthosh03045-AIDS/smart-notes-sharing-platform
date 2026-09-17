@@ -1,4 +1,4 @@
-import { useState, useRef, DragEvent, ChangeEvent, FormEvent } from 'react';
+import { useState, useEffect, useRef, DragEvent, ChangeEvent, FormEvent } from 'react';
 import { Note, CategoryType, User } from '../types';
 import { 
   Search, Cpu, Calculator, FlaskConical, Compass, Feather, 
@@ -28,6 +28,25 @@ const CATEGORIES: { slug: CategoryType; name: string; icon: any; color: string }
 export default function NotesCatalog({ notes, onSelectNote, onRefreshNotes, currentUser, onTriggerLogin }: NotesCatalogProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | 'all' | 'saved'>('all');
+  useEffect(() => {
+  const handleSavedNotes = () => {
+    setSearchTerm("");
+    setSelectedCategory("saved");
+
+    setTimeout(() => {
+      document.getElementById("notes")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 100);
+  };
+
+  window.addEventListener("showSavedNotes", handleSavedNotes);
+
+  return () => {
+    window.removeEventListener("showSavedNotes", handleSavedNotes);
+  };
+}, []);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [bookmarkedNotes, setBookmarkedNotes] = useState<string[]>(() => {
   try {
