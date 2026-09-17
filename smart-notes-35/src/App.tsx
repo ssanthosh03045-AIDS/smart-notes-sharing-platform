@@ -250,6 +250,9 @@ export default function App() {
         type="button"
         onClick={() => {
           setShowProfileMenu(false);
+          window.dispatchEvent(new Event("showMyNotes"));
+        }}
+          setShowProfileMenu(false);
           logout();
         }}
         className="w-full rounded-xl px-4 py-3 text-left text-sm font-semibold text-red-600 hover:bg-red-50"
