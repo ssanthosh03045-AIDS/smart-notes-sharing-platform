@@ -229,13 +229,13 @@ export default function App() {
       <button
         type="button"
         onClick={() => {
-         setShowProfileMenu(false);
-         setShowProfile(true);
-        }}
+          setShowProfileMenu(false);
           window.dispatchEvent(new Event("showSavedNotes"));
         }}
         className="w-full rounded-xl px-4 py-3 text-left text-sm font-medium text-slate-700 hover:bg-pink-50"
       >
+        ❤️ Saved Notes
+      </button>
         ❤️ Saved Notes
       </button>
 
