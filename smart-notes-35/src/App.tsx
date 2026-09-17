@@ -128,6 +128,7 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [showAuth, setShowAuth] = useState(false);
   const [search, setSearch] = useState("");
+  const [subjectFilter, setSubjectFilter] = useState("");
 
   const handleAuthSuccess = (user: User) => {
     setCurrentUser(user);
@@ -139,15 +140,22 @@ export default function App() {
     localStorage.removeItem("school_user");
   };
 
-  const filteredNotes = notes.filter((note) => {
-    const value = search.toLowerCase();
+ const filteredNotes = notes.filter((note) => {
+  const value = search.toLowerCase().trim();
 
-    return (
-      note.title.toLowerCase().includes(value) ||
-      note.description.toLowerCase().includes(value) ||
-      note.category.toLowerCase().includes(value)
-    );
-  });
+  const matchesSearch =
+    value === "" ||
+    note.title.toLowerCase().includes(value) ||
+    note.description.toLowerCase().includes(value) ||
+    note.category.toLowerCase().includes(value) ||
+    note.tags.some((tag) => tag.toLowerCase().includes(value));
+
+  const matchesSubject =
+    subjectFilter === "" ||
+    note.category.toLowerCase() === subjectFilter.toLowerCase();
+
+  return matchesSearch && matchesSubject;
+});
 
   return (
     <div className="min-h-screen bg-[#f8faff] text-slate-800">
@@ -418,7 +426,8 @@ export default function App() {
         .toLowerCase()
         .replace(/\s+/g, "-");
 
-      setSearch(categoryValue);
+      setSearch("");
+      setSubjectFilter(categoryValue); 
 
       setTimeout(() => {
         document.getElementById("notes")?.scrollIntoView({
