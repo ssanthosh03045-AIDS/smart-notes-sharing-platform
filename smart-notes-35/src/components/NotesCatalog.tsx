@@ -195,18 +195,21 @@ export default function NotesCatalog({ notes, onSelectNote, onRefreshNotes, curr
   };
 
   // Filters logic
-   const searchValue = searchTerm.toLowerCase().trim();
+  const filteredNotes = notes.filter((note) => {
+    const searchValue = searchTerm.toLowerCase().trim();
 
-   const matchesSearch =
-     note.title.toLowerCase().includes(searchValue) ||
-     note.description.toLowerCase().includes(searchValue) ||
-     note.category.toLowerCase().includes(searchValue) ||
-     note.tags.some(t => t.toLowerCase().includes(searchValue));
-    
-    const matchesCat = selectedCategory === 'all' || note.category === selectedCategory;
-    
+    const matchesSearch =
+      note.title.toLowerCase().includes(searchValue) ||
+      note.description.toLowerCase().includes(searchValue) ||
+      note.category.toLowerCase().includes(searchValue) ||
+      note.tags.some((t) => t.toLowerCase().includes(searchValue));
+
+    const matchesCat =
+      selectedCategory === 'all' ||
+      note.category === selectedCategory;
+
     return matchesSearch && matchesCat;
-  });
+});
 
   return (
     <div className="flex flex-col gap-6">
