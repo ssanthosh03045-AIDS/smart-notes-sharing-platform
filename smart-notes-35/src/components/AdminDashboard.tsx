@@ -363,7 +363,7 @@ export default function AdminDashboard({
   Delete Note
 </button>
       </div>
-    ))
+    )
   ) : (
     <p className="text-sm text-slate-500">
       No notes available.
