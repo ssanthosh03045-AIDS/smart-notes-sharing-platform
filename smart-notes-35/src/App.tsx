@@ -652,12 +652,17 @@ export default function App() {
 
 
       {/* AUTH MODAL */}
-      {showAuth && (
-        <AuthModal
-          onClose={() => setShowAuth(false)}
-          onAuthSuccess={handleAuthSuccess}
-        />
-      )}
+      {showAdminDashboard && (
+  <AdminDashboard
+    onClose={() => setShowAdminDashboard(false)}
+  />
+)}
+
+{showAuth && (
+  <AuthModal
+    ...
+  />
+)}
              {/* PROFILE MODAL */}
       {showProfile && currentUser && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/50 p-4">
