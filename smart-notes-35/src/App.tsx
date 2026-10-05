@@ -655,6 +655,7 @@ export default function App() {
 {showAdminDashboard && (
   <AdminDashboard
     onClose={() => setShowAdminDashboard(false)}
+    notes={notes}
   />
 )}
 
