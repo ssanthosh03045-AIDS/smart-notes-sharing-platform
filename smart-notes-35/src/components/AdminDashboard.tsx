@@ -1,3 +1,6 @@
+import { useState } from "react";
+
+
 import {
   Users,
   FileText,
@@ -17,6 +20,15 @@ export default function AdminDashboard({
   notes,
   setNotes,
 }: AdminDashboardProps) {
+
+   const [noteSearch, setNoteSearch] = useState("");
+
+   const filteredAdminNotes = notes.filter(
+     (note: any) =>
+       note.title.toLowerCase().includes(noteSearch.toLowerCase()) ||
+       note.category.toLowerCase().includes(noteSearch.toLowerCase())
+);
+
    const users = JSON.parse(
   localStorage.getItem("notes_users") || "[]"
 );
@@ -76,6 +88,18 @@ export default function AdminDashboard({
           >
             Close
           </button>
+
+          <button
+  type="button"
+  onClick={() => {
+    localStorage.removeItem("currentUser");
+    onClose();
+    window.location.reload();
+  }}
+  className="rounded-xl bg-red-50 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-100"
+>
+  Logout
+</button>
         </div>
 
         {/* Statistics */}
@@ -177,6 +201,27 @@ export default function AdminDashboard({
           <p className="mt-1 text-xs text-indigo-600">
             Role: {user.role}
           </p>
+
+          <button
+  type="button"
+  onClick={() => {
+    if (window.confirm(`Delete user "${user.username}"?`)) {
+      const updatedUsers = users.filter(
+        (item: any) => item.email !== user.email
+      );
+
+      localStorage.setItem(
+        "notes_users",
+        JSON.stringify(updatedUsers)
+      );
+
+      window.location.reload();
+    }
+  }}
+  className="mt-2 rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-100"
+>
+  Delete User
+</button>
         </div>
       ))}
     </div>
@@ -190,11 +235,14 @@ export default function AdminDashboard({
   )}
 
   <button
-    type="button"
-    className="mt-5 rounded-xl bg-purple-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-purple-700"
-  >
-    Manage Users
-  </button>
+  type="button"
+  onClick={() => {
+    alert(`Total registered users: ${users.length}`);
+  }}
+  className="mt-5 rounded-xl bg-purple-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-purple-700"
+>
+  Manage Users
+</button>
 </div>
            <div className="rounded-2xl bg-white p-6 shadow-sm">
   <h2 className="text-lg font-bold text-slate-900">
@@ -204,6 +252,14 @@ export default function AdminDashboard({
   <p className="mt-2 text-sm text-slate-500">
     View, manage and organize uploaded study notes.
   </p>
+             
+  <input
+  type="text"
+  value={noteSearch}
+  onChange={(e) => setNoteSearch(e.target.value)}
+  placeholder="Search notes..."
+  className="mt-4 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-indigo-500"
+/>
 
   <div className="mt-5 rounded-xl bg-indigo-50 p-4">
     <p className="text-sm font-semibold text-indigo-700">
@@ -221,19 +277,68 @@ export default function AdminDashboard({
 
   <div className="mt-5 space-y-3">
   {notes.length > 0 ? (
-    notes.map((note: any) => (
-      <div
-        key={note.id}
-        className="rounded-xl border border-slate-100 bg-slate-50 p-4"
-      >
-        <p className="font-semibold text-slate-800">
-          {note.title}
-        </p>
+    filteredAdminNotes.length > 0 ? (
+      filteredAdminNotes.map((note: any) => (
+        <div
+          key={note.id}
+          className="rounded-xl border border-slate-100 bg-slate-50 p-4"
+        >
+          <p className="font-semibold text-slate-800">
+            {note.title}
+          </p>
 
-        <p className="mt-1 text-xs text-slate-500">
-          {note.description}
-        </p>
+          <p className="mt-1 text-xs text-slate-500">
+            {note.description}
+          </p>
 
+          <div className="mt-2 flex gap-2">
+            <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-600">
+              {note.category}
+            </span>
+
+            <span className="rounded-full bg-purple-50 px-3 py-1 text-xs font-semibold text-purple-600">
+              {note.fileType}
+            </span>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              if (window.confirm(`Delete "${note.title}"?`)) {
+                setNotes((currentNotes) =>
+                  currentNotes.filter((item) => item.id !== note.id)
+                );
+              }
+            }}
+            className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-100"
+          >
+            Delete Note
+          </button>
+        </div>
+      ))
+    ) : (
+      <p className="text-sm text-slate-500">
+        No matching notes found.
+      </p>
+    )
+  ) : (
+    <p className="text-sm text-slate-500">
+      No notes available.
+    </p>
+  )}
+</div>
+  <div
+    key={note.id}
+    className="rounded-xl border border-slate-100 bg-slate-50 p-4"
+  >
+    <p className="font-semibold text-slate-800">
+      {note.title}
+    </p>
+
+    <p className="mt-1 text-xs text-slate-500">
+      {note.description}
+    </p>
+        <
         <div className="mt-2 flex gap-2">
           <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-600">
             {note.category}
@@ -267,14 +372,12 @@ export default function AdminDashboard({
 </div>
 
   <button
-    type="button"
-    onClick={() => {
-      alert("Notes Management feature is ready.");
-    }}
-    className="mt-5 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
-  >
-    Manage Notes
-  </button>
+  type="button"
+  onClick={() => setNoteSearch("")}
+  className="mt-5 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
+>
+  Clear Search
+</button>
 </div>
 
         </div>
