@@ -651,18 +651,20 @@ export default function App() {
       </footer>
 
 
-      {/* AUTH MODAL */}
-      {showAdminDashboard && (
+      {/* ADMIN DASHBOARD */}
+{showAdminDashboard && (
   <AdminDashboard
     onClose={() => setShowAdminDashboard(false)}
   />
 )}
 
+{/* AUTH MODAL */}
 {showAuth && (
   <AuthModal
-    ...
+    onClose={() => setShowAuth(false)}
+    onAuthSuccess={handleAuthSuccess}
   />
-)}
+)} 
              {/* PROFILE MODAL */}
       {showProfile && currentUser && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/50 p-4">
