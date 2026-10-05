@@ -8,18 +8,17 @@ import {
 
 interface AdminDashboardProps {
   onClose: () => void;
+  notes: any[];
 }
 
 export default function AdminDashboard({
   onClose,
+  notes,
 }: AdminDashboardProps) {
-
    const users = JSON.parse(
   localStorage.getItem("notes_users") || "[]"
 );
-   const notes = JSON.parse(
-  localStorage.getItem("notes") || "[]"
-);
+  
    const savedNotes = JSON.parse(
   localStorage.getItem("bookmarked_notes") || "[]"
 );
@@ -210,13 +209,56 @@ export default function AdminDashboard({
     </p>
 
     <p className="mt-1 text-2xl font-bold text-slate-900">
-      6
-    </p>
+  {notes.length}
+</p>
 
     <p className="text-xs text-slate-500">
       Study notes currently available on the platform.
     </p>
   </div>
+
+  <div className="mt-5 space-y-3">
+  {notes.length > 0 ? (
+    notes.map((note: any) => (
+      <div
+        key={note.id}
+        className="rounded-xl border border-slate-100 bg-slate-50 p-4"
+      >
+        <p className="font-semibold text-slate-800">
+          {note.title}
+        </p>
+
+        <p className="mt-1 text-xs text-slate-500">
+          {note.description}
+        </p>
+
+        <div className="mt-2 flex gap-2">
+          <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-600">
+            {note.category}
+          </span>
+
+          <span className="rounded-full bg-purple-50 px-3 py-1 text-xs font-semibold text-purple-600">
+            {note.fileType}
+          </span>
+        </div>
+
+        <button
+  type="button"
+  onClick={() => {
+    alert(`Delete feature for "${note.title}" is ready.`);
+  }}
+  className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-100"
+>
+  Delete Note
+</button>
+      </div>
+    ))
+  ) : (
+    <p className="text-sm text-slate-500">
+      No notes available.
+    </p>
+  )}
+</div>
 
   <button
     type="button"
