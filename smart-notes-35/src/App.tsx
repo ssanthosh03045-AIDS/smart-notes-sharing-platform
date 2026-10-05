@@ -127,6 +127,7 @@ const DEMO_NOTES: Note[] = [
 export default function App() {
   const [notes, setNotes] = useState<Note[]>(DEMO_NOTES);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [showAdminDashboard, setShowAdminDashboard] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
@@ -134,9 +135,12 @@ export default function App() {
   const [subjectFilter, setSubjectFilter] = useState("");
 
   const handleAuthSuccess = (user: User) => {
-    setCurrentUser(user);
-    localStorage.setItem("school_user", JSON.stringify(user));
-  };
+  setCurrentUser(user);
+
+  if (user.email === "admin@noteshare.com") {
+    setShowAdminDashboard(true);
+  }
+};
 
   const logout = () => {
     setCurrentUser(null);
