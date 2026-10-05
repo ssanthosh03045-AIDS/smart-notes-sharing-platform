@@ -654,9 +654,10 @@ export default function App() {
       {/* ADMIN DASHBOARD */}
 {showAdminDashboard && (
   <AdminDashboard
-    onClose={() => setShowAdminDashboard(false)}
-    notes={notes}
-  />
+  onClose={() => setShowAdminDashboard(false)}
+  notes={notes}
+  setNotes={setNotes}
+/>
 )}
 
 {/* AUTH MODAL */}
