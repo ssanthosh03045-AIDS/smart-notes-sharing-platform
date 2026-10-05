@@ -13,27 +13,38 @@ interface AdminDashboardProps {
 export default function AdminDashboard({
   onClose,
 }: AdminDashboardProps) {
+
+   const users = JSON.parse(
+  localStorage.getItem("notes_users") || "[]"
+);
+   const notes = JSON.parse(
+  localStorage.getItem("notes") || "[]"
+);
+   const savedNotes = JSON.parse(
+  localStorage.getItem("bookmarked_notes") || "[]"
+);
+  
   const stats = [
     {
       title: 'Total Users',
-      value: '12',
+      value: users.length.toString(),
       icon: Users,
-    },
+},
     {
       title: 'Total Notes',
-      value: '6',
+      value: notes.length.toString(),
       icon: FileText,
-    },
+},
     {
       title: 'Saved Notes',
-      value: '8',
+      value: savedNotes.length.toString(),
       icon: Bookmark,
-    },
+},
     {
       title: 'Active Users',
-      value: '9',
+      value: users.length.toString(),
       icon: BarChart3,
-    },
+},
   ];
 
   return (
@@ -94,42 +105,129 @@ export default function AdminDashboard({
           })}
         </div>
 
+        {/* Recent Users */}
+<div className="mt-6 rounded-2xl bg-white p-6 shadow-sm">
+  <h2 className="text-lg font-bold text-slate-900">
+    Recent Users
+  </h2>
+
+  <p className="mt-1 text-sm text-slate-500">
+    Recently registered users on NoteShare.
+  </p>
+
+  <div className="mt-5 space-y-3">
+    {users.length > 0 ? (
+      users.slice(-5).reverse().map((user: any) => (
+        <div
+          key={user.email}
+          className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50 p-4"
+        >
+          <div>
+            <p className="font-semibold text-slate-800">
+              {user.username}
+            </p>
+
+            <p className="text-xs text-slate-500">
+              {user.email}
+            </p>
+          </div>
+
+          <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-600">
+            {user.role}
+          </span>
+        </div>
+      ))
+    ) : (
+      <p className="text-sm text-slate-500">
+        No users registered yet.
+      </p>
+    )}
+  </div>
+</div>
+        
         {/* Management */}
         <div className="mt-6 grid gap-6 md:grid-cols-2">
 
           <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-bold text-slate-900">
-              Notes Management
-            </h2>
+  <h2 className="text-lg font-bold text-slate-900">
+    User Management
+  </h2>
 
-            <p className="mt-2 text-sm text-slate-500">
-              View, manage and organize uploaded study notes.
-            </p>
+  <p className="mt-2 text-sm text-slate-500">
+    View registered users and manage platform access.
+  </p>
 
-            <button
-              type="button"
-              className="mt-5 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
-            >
-              Manage Notes
-            </button>
-          </div>
+  {/* Registered Users */}
+  {users.length > 0 && (
+    <div className="mt-5 space-y-2">
+      {users.map((user: any) => (
+        <div
+          key={user.email}
+          className="rounded-xl border border-slate-100 bg-slate-50 p-3"
+        >
+          <p className="font-semibold text-slate-800">
+            {user.username}
+          </p>
 
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-bold text-slate-900">
-              User Management
-            </h2>
+          <p className="text-xs text-slate-500">
+            {user.email}
+          </p>
 
-            <p className="mt-2 text-sm text-slate-500">
-              View registered users and manage platform access.
-            </p>
+          <p className="mt-1 text-xs text-indigo-600">
+            Role: {user.role}
+          </p>
+        </div>
+      ))}
+    </div>
+  )}
 
-            <button
-              type="button"
-              className="mt-5 rounded-xl bg-purple-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-purple-700"
-            >
-              Manage Users
-            </button>
-          </div>
+  {/* No Users */}
+  {users.length === 0 && (
+    <div className="mt-5 rounded-xl bg-slate-50 p-4 text-sm text-slate-500">
+      No registered users found.
+    </div>
+  )}
+
+  <button
+    type="button"
+    className="mt-5 rounded-xl bg-purple-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-purple-700"
+  >
+    Manage Users
+  </button>
+</div>
+           <div className="rounded-2xl bg-white p-6 shadow-sm">
+  <h2 className="text-lg font-bold text-slate-900">
+    Notes Management
+  </h2>
+
+  <p className="mt-2 text-sm text-slate-500">
+    View, manage and organize uploaded study notes.
+  </p>
+
+  <div className="mt-5 rounded-xl bg-indigo-50 p-4">
+    <p className="text-sm font-semibold text-indigo-700">
+      Notes Available
+    </p>
+
+    <p className="mt-1 text-2xl font-bold text-slate-900">
+      6
+    </p>
+
+    <p className="text-xs text-slate-500">
+      Study notes currently available on the platform.
+    </p>
+  </div>
+
+  <button
+    type="button"
+    onClick={() => {
+      alert("Notes Management feature is ready.");
+    }}
+    className="mt-5 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
+  >
+    Manage Notes
+  </button>
+</div>
 
         </div>
 
