@@ -28,16 +28,33 @@ export default function AuthModal({ onClose, onAuthSuccess }: AuthModalProps) {
     );
 
     if (isLogin) {
-      const user = users.find(
-        (u: User & { password: string }) =>
-          u.email === email && u.password === password
-      );
+  if (
+    email === 'admin@noteshare.com' &&
+    password === 'admin123'
+  ) {
+    const adminUser: User = {
+      id: 'admin-001',
+      username: 'Admin',
+      email: email,
+      role: 'instructor',
+      bio: 'NoteShare Administrator',
+    };
 
-      if (!user) {
-        throw new Error('Invalid email or password.');
-      }
+    onAuthSuccess(adminUser);
+    onClose();
+    return;
+  }
 
-      const { password: _password, ...safeUser } = user;
+  const user = users.find(
+    (u: User & { password: string }) =>
+      u.email === email && u.password === password
+  );
+
+  if (!user) {
+    throw new Error('Invalid email or password.');
+  }
+
+  const { password: _password, ...safeUser } = user;
 
       onAuthSuccess(safeUser as User);
       onClose();
