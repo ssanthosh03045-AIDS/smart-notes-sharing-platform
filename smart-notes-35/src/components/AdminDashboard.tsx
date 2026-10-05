@@ -326,49 +326,60 @@ export default function AdminDashboard({
       No notes available.
     </p>
   )}
-</div>
-  <div
-    key={note.id}
-    className="rounded-xl border border-slate-100 bg-slate-50 p-4"
-  >
-    <p className="font-semibold text-slate-800">
-      {note.title}
-    </p>
+<div className="mt-5 space-y-3">
+  {notes.length > 0 ? (
+    filteredAdminNotes.length > 0 ? (
+      filteredAdminNotes.map((note: any) => (
+        <div
+          key={note.id}
+          className="rounded-xl border border-slate-100 bg-slate-50 p-4"
+        >
+          <p className="font-semibold text-slate-800">
+            {note.title}
+          </p>
 
-    <p className="mt-1 text-xs text-slate-500">
-      {note.description}
-    </p>
-        
-        <div className="mt-2 flex gap-2">
-          <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-600">
-            {note.category}
-          </span>
+          <p className="mt-1 text-xs text-slate-500">
+            {note.description}
+          </p>
 
-          <span className="rounded-full bg-purple-50 px-3 py-1 text-xs font-semibold text-purple-600">
-            {note.fileType}
-          </span>
+          <div className="mt-2 flex gap-2">
+            <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-600">
+              {note.category}
+            </span>
+
+            <span className="rounded-full bg-purple-50 px-3 py-1 text-xs font-semibold text-purple-600">
+              {note.fileType}
+            </span>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              if (window.confirm(`Delete "${note.title}"?`)) {
+                setNotes((currentNotes) =>
+                  currentNotes.filter(
+                    (item) => item.id !== note.id
+                  )
+                );
+              }
+            }}
+            className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-100"
+          >
+            Delete Note
+          </button>
         </div>
-
-        <button
-  type="button"
-  onClick={() => {
-    if (window.confirm(`Delete "${note.title}"?`)) {
-      setNotes((currentNotes) =>
-        currentNotes.filter((item) => item.id !== note.id)
-      );
-    }
-  }}
-  className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-100"
->
-  Delete Note
-</button>
-      </div>
+      ))
+    ) : (
+      <p className="text-sm text-slate-500">
+        No matching notes found.
+      </p>
     )
   ) : (
     <p className="text-sm text-slate-500">
       No notes available.
     </p>
   )}
+</div>
 </div>
 
   <button
