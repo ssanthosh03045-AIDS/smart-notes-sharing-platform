@@ -338,7 +338,7 @@ export default function AdminDashboard({
     <p className="mt-1 text-xs text-slate-500">
       {note.description}
     </p>
-        <
+        
         <div className="mt-2 flex gap-2">
           <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-600">
             {note.category}
