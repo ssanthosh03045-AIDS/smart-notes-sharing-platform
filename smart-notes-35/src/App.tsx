@@ -16,6 +16,7 @@ import {
 import { Note, User } from "./types";
 import NotesCatalog from "./components/NotesCatalog";
 import AuthModal from "./components/AuthModal";
+import AdminDashboard from "./components/AdminDashboard";
 
 const DEMO_NOTES: Note[] = [
   {
