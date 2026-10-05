@@ -9,11 +9,13 @@ import {
 interface AdminDashboardProps {
   onClose: () => void;
   notes: any[];
+  setNotes: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 export default function AdminDashboard({
   onClose,
   notes,
+  setNotes,
 }: AdminDashboardProps) {
    const users = JSON.parse(
   localStorage.getItem("notes_users") || "[]"
@@ -245,7 +247,11 @@ export default function AdminDashboard({
         <button
   type="button"
   onClick={() => {
-    alert(`Delete feature for "${note.title}" is ready.`);
+    if (window.confirm(`Delete "${note.title}"?`)) {
+      setNotes((currentNotes) =>
+        currentNotes.filter((item) => item.id !== note.id)
+      );
+    }
   }}
   className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-100"
 >
